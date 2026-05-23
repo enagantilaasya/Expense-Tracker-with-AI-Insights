@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../stores/authStore";
 import { useEffect } from "react";
-import { signInWithPopup } from "firebase/auth";
 import axios from "axios";
 
 function Login() {
@@ -29,84 +28,6 @@ function Login() {
 
   };
 
-  // GOOGLE LOGIN
-  const handleGoogleLogin = async () => {
-
-    try {
-
-      const result =
-        await signInWithPopup(
-          auth,
-          provider
-        );
-
-      // GET FIREBASE ID TOKEN
-      const token =
-        await result.user.getIdToken();
-
-      // SEND TOKEN TO BACKEND
-      const res =
-        await axios.post(
-
-          "http://localhost:1971/auth/google-login",
-
-          { token },
-
-          {
-            withCredentials: true,
-          }
-
-        );
-
-      // SAVE USER + TOKEN
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(
-          res.data.payload
-        )
-      );
-
-      // OPTIONAL FOR ZUSTAND AUTH
-      useAuth.setState({
-
-        currentUser:
-          res.data.payload,
-
-        isAuthenticated: true,
-
-        error: null,
-
-      });
-
-      // NAVIGATE
-      navigate("/dashboard");
-
-    }
-
-    catch (err) {
-
-      console.log(
-        "Google Login Error",
-        err.response?.data ||
-        err.message
-      );
-
-      alert(
-
-        err.response?.data?.message ||
-
-        "Google Login Failed"
-
-      );
-
-    }
-
-  };
 
   // NAVIGATION AFTER LOGIN
   useEffect(() => {

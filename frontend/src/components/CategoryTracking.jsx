@@ -1,6 +1,4 @@
-import { useEffect, useState }
-from "react";
-
+import { useEffect, useState } from "react";
 import {
   PieChart,
   Pie,
@@ -8,16 +6,9 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-}
-from "recharts";
-
-import {
-  fetchTransactions
-}
-from "../stores/transactionStore";
-
+} from "recharts";
+import {fetchTransactions} from "../stores/transactionStore";
 const COLORS = [
-
   "#ff4d4d",
   "#ff7a18",
   "#ffb347",
@@ -28,7 +19,6 @@ const COLORS = [
   "#00e0ff",
   "#84cc16",
   "#f97316",
-
 ];
 
 // TOOLTIP

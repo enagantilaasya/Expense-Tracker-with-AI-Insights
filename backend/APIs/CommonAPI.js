@@ -3,249 +3,133 @@ import { hash, compare } from "bcryptjs";
 import { config } from "dotenv";
 import { UserModel } from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
-
+config();
+const { sign } = jwt;
 export const commonApp = exp.Router();
 
-const { sign } = jwt;
-
-config();
-
-// ================= REGISTER =================
+// REGISTER
 commonApp.post("/register", async (req, res) => {
 
   try {
 
     const newUser = req.body;
 
-    // CHECK EXISTING EMAIL
-    const existingEmail =
+    // CHECK EMAIL
+    const emailExists =
       await UserModel.findOne({
-
         email: newUser.email,
-
       });
 
-    if (existingEmail) {
+    if (emailExists) {
 
       return res.status(400).json({
-
         message: "Email already exists",
-
       });
 
     }
 
-    // CHECK EXISTING USERNAME
-    const existingUsername =
+    // CHECK USERNAME
+    const usernameExists =
       await UserModel.findOne({
-
         username: newUser.username,
-
       });
 
-    if (existingUsername) {
+    if (usernameExists) {
 
       return res.status(400).json({
-
         message: "Username already exists",
-
       });
 
     }
 
     // HASH PASSWORD
     newUser.password =
-      await hash(
-        newUser.password,
-        12
-      );
-
-    // NORMAL LOGIN USER
-    newUser.googleAuth = false;
+      await hash(newUser.password, 12);
 
     // SAVE USER
-    const userDoc =
-      new UserModel(newUser);
-
-    await userDoc.save();
+    await new UserModel(newUser).save();
 
     res.status(201).json({
-
-      message:
-        "Registered Successfully",
-
+      message: "Registered Successfully",
     });
 
   }
 
   catch (err) {
 
-    console.log(
-      "Registration error",
-      err
-    );
-
     res.status(500).json({
-
       message: err.message,
-
     });
 
   }
 
 });
-
-
-// ================= LOGIN =================
+// LOGIN
 commonApp.post("/login", async (req, res) => {
 
   try {
+    const {identifier,password, } = req.body;
 
-    const {
-      identifier,
-      password,
-    } = req.body;
-
-    // FIND BY USERNAME OR EMAIL
-    const user =
-      await UserModel.findOne({
-
-        $or: [
-
-          {
-            username: identifier,
-          },
-
-          {
-            email: identifier,
-          },
-
-        ],
-
-      });
-
+    // FIND BY EMAIL
+    let user =await UserModel.findOne({email: identifier,});
+    // FIND BY USERNAME
+    if (!user) {
+      user =await UserModel.findOne({ username: identifier,});
+    }
     // USER NOT FOUND
     if (!user) {
-
-      return res.status(400).json({
-
-        message:
-          "Invalid Username or Email",
-
-      });
+      return res.status(400).json({message: "Invalid Username or Email", });
 
     }
 
     // PASSWORD CHECK
-    const isMatched =
-      await compare(
-        password,
-        user.password
-      );
-
-    if (!isMatched) {
-
+    const matched =await compare(password, user.password);
+    if (!matched) {
       return res.status(400).json({
-
-        message:
-          "Invalid Password",
-
+        message: "Invalid Password",
       });
 
     }
-
-    // JWT TOKEN
+    // TOKEN
     const token = sign(
-
       {
-
         id: user._id,
-
-        username:
-          user.username,
-
-        email:
-          user.email,
-
-        phoneno:
-          user.phoneno,
-
+        username: user.username,
+        email: user.email,
       },
-
       process.env.SECRET_KEY,
 
       {
-
         expiresIn: "1h",
-
       }
 
     );
-
     // COOKIE
     res.cookie("token", token, {
 
       httpOnly: true,
-
       secure: false,
-
       sameSite: "lax",
 
     });
-
     // REMOVE PASSWORD
-    let userObj =
-      user.toObject();
-
+    let userObj =user.toObject();
     delete userObj.password;
-
     res.status(200).json({
-
-      message:
-        "Login Success",
-
+      message: "Login Success",
       payload: userObj,
-
     });
-
   }
-
-  catch (err) {
-
-    console.log(
-      "Login Error",
-      err
-    );
-
-    res.status(500).json({
-
-      message: err.message,
-
-    });
-
+  catch (err) {res.status(500).json({message: err.message,});
   }
 
 });
-
-
-// ================= LOGOUT =================
-commonApp.get("/logout", async (req, res) => {
-
-  res.clearCookie("token", {
-
-    httpOnly: true,
-
-    secure: false,
-
-    sameSite: "lax",
-
-  });
-
-  res.status(200).json({
-
-    message:
-      "Logout Success",
-
-  });
-
-});
+// LOGOUT
+commonApp.get("/logout",async(req,res)=>{
+    res.clearCookie("token",{
+        httpOnly:true,
+        secure:false,
+        sameSite:"lax",
+    });
+    res.status(200).json({message:"Logout Success"});
+})

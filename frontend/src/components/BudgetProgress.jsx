@@ -1,13 +1,6 @@
-import { useEffect, useState }
-from "react";
-
-import {
-  fetchTransactions
-}
-from "../stores/transactionStore";
-
+import { useEffect, useState } from "react";
+import {fetchTransactions} from "../stores/transactionStore";
 const DEFAULT_LIMITS = {
-
   food: 10000,
   shopping: 15000,
   rent: 20000,
@@ -16,143 +9,68 @@ const DEFAULT_LIMITS = {
   water: 1000,
   internet: 2000,
   other: 5000,
-
 };
-
 function BudgetProgress() {
-
-  const [spent, setSpent] =
-    useState({});
-
+  const [spent, setSpent] = useState({});
   const [limits, setLimits] =
     useState(() => {
-
       try {
-
-        const saved =
-          localStorage.getItem(
-            "budgetLimits"
-          );
-
+        const saved =  localStorage.getItem( "budgetLimits" );
         return saved
           ? JSON.parse(saved)
           : DEFAULT_LIMITS;
-
       }
-
       catch {
-
         return DEFAULT_LIMITS;
-
       }
-
     });
-
   const [loading, setLoading] =
     useState(true);
-
   const [editing, setEditing] =
     useState(false);
-
   const [draftLimits, setDraftLimits] =
     useState(limits);
-
   useEffect(() => {
-
     loadData();
-
   }, []);
-
   const loadData = async () => {
-
     try {
-
       setLoading(true);
-
       const transactions =
         await fetchTransactions();
-
       const now =
         new Date();
-
       let spentMap = {};
-
       transactions.forEach((t) => {
-
         const date =
           new Date(t.date);
-
-        if (
-
-          date.getMonth() ===
-          now.getMonth()
-
-          &&
-
-          date.getFullYear() ===
-          now.getFullYear()
-
-        ) {
-
+        if ( date.getMonth() ===now.getMonth()&&date.getFullYear() ===  now.getFullYear() )
+       {
           t.transactions?.forEach((item) => {
-
-            if (
-              item.type ===
-              "expense"
-            ) {
-
-              const cat =
-                item.category
-                ?.toLowerCase()
-                || "other";
-
-              spentMap[cat] =
-
-                (spentMap[cat] || 0)
-
-                +
-
-                parseFloat(
-                  item.amount || 0
-                );
-
+            if ( item.type === "expense" )
+           {
+              const cat = item.category ?.toLowerCase() || "other";
+              spentMap[cat] = (spentMap[cat] || 0) + parseFloat( item.amount || 0 );
             }
-
           });
-
         }
-
       });
-
       setSpent(spentMap);
-
     }
-
     catch (err) {
-
       console.log(
         "BudgetProgress error:",
         err
       );
-
     }
-
     finally {
-
       setLoading(false);
-
     }
-
   };
-
   const saveLimits = () => {
-
     setLimits(draftLimits);
-
     localStorage.setItem(
-
       "budgetLimits",
-
       JSON.stringify(
         draftLimits
       )
@@ -175,19 +93,7 @@ function BudgetProgress() {
 
   ];
 
-  const overBudgetCount =
-    allCategories.filter(
-
-      (cat) =>
-
-        (spent[cat] || 0)
-
-        >
-
-        (limits[cat] || 0)
-
-    ).length;
-
+  const overBudgetCount = allCategories.filter((cat) =>(spent[cat] || 0) >(limits[cat] || 0) ).length;
   return (
 
     <div className="relative overflow-hidden bg-black/60 backdrop-blur-2xl border border-red-500/20 rounded-[36px] p-8 shadow-[0_0_80px_rgba(255,40,0,0.25)]">
