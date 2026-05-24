@@ -37,7 +37,11 @@ export const useAuth = create((set) => ({
 
   logout: async () => {
     try {
+<<<<<<< HEAD
       //  clear localStorage on logout
+=======
+      // ✅ clear localStorage on logout
+>>>>>>> bd7384aecd5fe4aabca623e63417b7a98b50518f
       localStorage.removeItem("token");
       set({
         currentUser: null,
