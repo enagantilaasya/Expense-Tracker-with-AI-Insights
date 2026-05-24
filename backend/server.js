@@ -11,14 +11,26 @@ import cors from "cors";
 config();
 
 const app = exp();
-//enable cors
-app.use(cors({
-  origin: ["http://localhost:5173"],
-  credentials: true
-}))
-//add cookie parser middeleware
-app.use(cookieParser())
-//body parser middleware
+
+// CORS config — must be before everything else
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (
+      !origin ||
+      origin === "http://localhost:5173" ||
+      /^https:\/\/expense-tracker-with-ai-insights.*\.vercel\.app$/.test(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+// Body parser middleware
 app.use(exp.json());
 
 // Cookie parser middleware
