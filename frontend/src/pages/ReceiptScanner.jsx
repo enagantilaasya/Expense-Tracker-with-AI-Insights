@@ -2,7 +2,7 @@ import { useState } from "react";
 import Tesseract from "tesseract.js";
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-qne0.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-8z4e.onrender.com";
 
 export default function ReceiptScanner() {
 
