@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-8z4e.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-qne0.onrender.com";
 
 export const useAuth = create((set) => ({
   currentUser: null,
@@ -15,7 +15,7 @@ export const useAuth = create((set) => ({
       let res = await axios.post(`${BASE_URL}/auth/login`, userCred);
 
       if (res.status === 200) {
-        // save token to localStorage
+        // ✅ save token to localStorage
         localStorage.setItem("token", res.data.token);
         set({
           currentUser: res.data?.payload,

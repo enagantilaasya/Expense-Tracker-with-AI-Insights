@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MonthlyReport from "../components/MonthlyReport";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-8z4e.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-qne0.onrender.com";
 
 export default function Reports() {
 
