@@ -29,7 +29,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 // Body parser middleware
 app.use(exp.json());
