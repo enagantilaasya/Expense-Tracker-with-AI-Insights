@@ -17,7 +17,7 @@ function Register() {
   } = useForm();
 
   const BASE_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:1971";
+    import.meta.env.VITE_API_URL || "https://expense-tracker-with-ai-insights-qne0.onrender.com";
 
   // REGISTER USER
   const onUserRegister = async (userObj) => {
