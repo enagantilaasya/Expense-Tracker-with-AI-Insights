@@ -1,16 +1,185 @@
-# React + Vite
+# Expense Tracker With AI Insights - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Frontend
 
-Currently, two official plugins are available:
+### Technologies Used
+- React JS
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Zustand
+- Axios
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+FrontEnd
+│
+├── public
+│
+├── src
+│   ├── assets
+│   │
+│   ├── components
+│   │   ├── AddTransactionForm.jsx
+│   │   ├── BudgetProgress.jsx
+│   │   ├── CategoryTracking.jsx
+│   │   ├── DashboardLayout.jsx
+│   │   ├── ExpensePieChart.jsx
+│   │   ├── Footer.jsx
+│   │   ├── GraphAnalytics.jsx
+│   │   ├── Header.jsx
+│   │   ├── Income_Expenses.jsx
+│   │   ├── MonthlyLineChart.jsx
+│   │   ├── MonthlyReport.jsx
+│   │   ├── PredictionCard.jsx
+│   │   ├── ProtectedRoute.jsx
+│   │   ├── ReportExport.jsx
+│   │   ├── RootLayout.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── SummaryCards.jsx
+│   │   └── TransactionTable.jsx
+│   │
+│   ├── pages
+│   │   ├── AIInsights.jsx
+│   │   ├── Analytics.jsx
+│   │   ├── BudgetAlerts.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Predictions.jsx
+│   │   ├── Profile.jsx
+│   │   ├── ReceiptScanner.jsx
+│   │   ├── Register.jsx
+│   │   ├── Reports.jsx
+│   │   └── Transactions.jsx
+│   │
+│   ├── services
+│   │   └── api.js
+│   │
+│   ├── stores
+│   │   ├── authStore.js
+│   │   └── transactionStore.js
+│   │
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .env
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+└── vite.config.js
+```
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Installation Steps
+
+## Step 1: Install Dependencies
+
+```bash
+npm install react-router-dom axios zustand tailwindcss
+```
+
+---
+
+## Step 2: Create `.env` File
+
+```env
+VITE_API_URL=your_backend_url
+```
+
+---
+
+## Step 3: Start Development Server
+
+```bash
+npm run dev
+```
+
+---
+
+# To Deploy
+
+## Use Vercel for Frontend Deployment
+
+### Steps To Deploy
+
+#### Step 1: Push the project to GitHub
+
+```bash
+git add .
+git commit -m "Initial Commit"
+git push origin main
+```
+
+---
+
+#### Step 2: Connect GitHub Repository to Vercel
+
+- Login to Vercel
+- Click on **Add New**
+- Click on **Project**
+- Connect your GitHub account
+- Select your project repository
+
+---
+
+#### Step 3: Add Environment Variables
+
+```env
+VITE_API_URL=your_backend_url
+```
+
+Use the deployed Render backend link.
+
+---
+
+#### Step 4: Configure Vercel Settings
+
+- Root Directory: `frontend`
+
+Build Command:
+
+```bash
+npm run build
+```
+
+Output Directory:
+
+```bash
+dist
+```
+
+---
+
+#### Step 5: Deploy
+
+Click on **Deploy**
+
+Your frontend will be live after successful deployment.
+
+---
+
+# Important Note
+
+After frontend deployment:
+
+- Copy the deployed frontend URL
+- Add it inside backend `server.js` CORS configuration
+- Redeploy backend in Render
+- Redeploy frontend in Vercel
+
+This helps frontend and backend connect properly.
+
+---
+
+# Deployment Link
+
+```bash
+https://expense-tracker-with-ai-insights-three.vercel.app/
+```
